@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+var axios = require('axios')
+
 const { ActivityTypes } = require('botbuilder');
 
 class MyBot {
@@ -10,6 +12,23 @@ class MyBot {
      */
     async onTurn(turnContext) {
         // See https://aka.ms/about-bot-activity-message to learn more about the message and other activity types.
+
+        var url = "https://261ad154.ngrok.io/api/politician/"
+        const api = axios.create({
+            baseURL: url,
+          });
+          api.defaults.headers.common['Content-Type'] = "application/json";
+          api.get().then(function (response) {
+            // handle success
+            console.log(response)
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .then(function () {
+            // always executed
+        });
         if (turnContext.activity.type === ActivityTypes.Message) {
             await turnContext.sendActivity(`You said '${ turnContext.activity.text }'`);
         } else {
